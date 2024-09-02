@@ -35,86 +35,112 @@ var senha = 3589
 var tentativaSenha = 0;
 var extratos = ["R$300,00 - Compra em YouCom", "R$100,00 - Compra em Mc Donalds", "R$540,00 - Depósito para Beyoncé Giselle Knowles Carter", "R$134,23 - Compra em Renner", "R$530,00 - Compra em Chilli Beans", "R$350,00 - Compra em OutBack"]
 
-function verificarSenha(){
+function verificarSenha() {
     tentativaSenha = parseInt(prompt("Digite a sua senha para acessar essa área"))
     while (tentativaSenha != senha) {
         tentativaSenha = parseInt(prompt("Senha incorreta. Tente novamente:"))
     }
 }
 
-function erro(){
-    alert("Operação não autorizada. Volte ao menu para tentar novamente!")
-}
-
-function inicio(){
+function inicio() {
 
     var opcao = parseInt(prompt("[1]- Saldo [2]- Extrato [3]- Saque [4]- Depósito [5]- Transferência [6]- Sair"))
 
-switch (opcao) {
-    case 1:
-        verificarSenha();
+    switch (opcao) {
+        case 1:
+            verificarSenha();
+            verificarSaldo();
+            break;
 
-        alert(`${nome}, você possui um saldo de: ${saldo} reais.`)
-        break;
 
 
-    case 2:
-        verificarSenha();
-        
-        alert(`${nome}, aqui está seus últimos extratos:\n${extratos.join("\n")}`)
-        break;
+        case 2:
+            verificarSenha();
+            verificarExtratos();
+            break;
 
-    case 3:
-        verificarSenha();
+        case 3:
+            verificarSenha();
+            realizarSaque();
+            break;
 
-        var saque = parseInt(prompt("Digite o valor que você deseja sacar: "))
-        if (saque > saldo || saque <= 0) {
-            erro()
-        } else {
-            alert("Saque efetuado com sucesso!")
-        }
-        break;
+        case 4:
+            verificarSenha();
+            realizarDeposito();
+            break;
 
-    case 4:
-        verificarSenha();
+        case 5:
+            verificarSenha();
+            realizarTransferencia()
+            break;
 
-        var deposito = parseInt(prompt("Digite o valor do depósito."))
-        if (deposito <= 0 || isNaN(deposito)){
-            erro()
-        } else {
-            alert("Operação feita com sucesso!")
-        }
+        case 6:
+            sairDaConta();
 
-        break;
-
-    case 5:
-        verificarSenha();
-
-        var numeroDaConta = parseInt(prompt("Digite o número da conta para o qual você quer realizar a transferência"))
-
-        while (isNaN(numeroDaConta)) {
-            alert("Caracteres não são aceitos. Por favor, digite um número!");
-            numeroDaConta = parseInt(prompt("Digite o número da conta para o qual você quer realizar a transferência"));
-        }
-
-        valorTransferencia = parseInt(prompt("Qual o valor da transferência?"))
-        if (valorTransferencia > saldo || valorTransferencia <= 0) {
-            erro()
-        } else {
-            saldo = saldo - valorTransferencia;
-            alert(`Valor transferido. Seu saldo atual agora é ${saldo}`)
-        }
-        break;
-
-        case 6: 
-        alert(`${nome}, foi um prazer ter você por aqui! Até a próxima.`)
-        return;
-
-        default: 
-        alert("Opção Inválida!")
-        break;
+        default:
+            alert("Opção Inválida!")
+            break;
+    }
 }
-inicio();
+
+function erro() {
+    alert("Operação não autorizada. Volte ao menu para tentar novamente!")
+    inicio();
+}
+
+function verificarSaldo() {
+    alert(`${nome}, você possui um saldo de: ${saldo} reais.`)
+    inicio();
+}
+
+function verificarExtratos() {
+    alert(`${nome}, aqui está seus últimos extratos:\n${extratos.join("\n")}`)
+    inicio();
+}
+
+function realizarSaque() {
+    var saque = parseInt(prompt("Digite o valor que você deseja sacar: "))
+    if (saque > saldo || saque <= 0) {
+        erro()
+    } else {
+        alert("Saque efetuado com sucesso!")
+        saldo = saldo - saque;
+        alert(`O seu saldo atual agora é: ${saldo}`)
+    }
+    inicio();
+}
+
+function realizarDeposito() {
+    var deposito = parseInt(prompt("Digite o valor do depósito."))
+    if (deposito <= 0 || isNaN(deposito)) {
+        erro()
+    } else {
+        alert("Operação feita com sucesso!")
+    }
+    inicio();
+}
+
+function realizarTransferencia() {
+    var numeroDaConta = parseInt(prompt("Digite o número da conta para o qual você quer realizar a transferência"))
+
+    while (isNaN(numeroDaConta)) {
+        alert("Caracteres não são aceitos. Por favor, digite um número!");
+        numeroDaConta = parseInt(prompt("Digite o número da conta para o qual você quer realizar a transferência"));
+    }
+
+    var valorTransferencia = parseInt(prompt("Qual o valor da transferência?"))
+    if (valorTransferencia > saldo || valorTransferencia <= 0) {
+        erro()
+    } else {
+        saldo = saldo - valorTransferencia;
+        alert(`Valor transferido. Seu saldo atual agora é ${saldo}`)
+    }
+    inicio();
+}
+
+function sairDaConta() {
+    alert(`${nome}, foi um prazer ter você por aqui! Até a próxima.`)
+    return;
 }
 
 inicio();
